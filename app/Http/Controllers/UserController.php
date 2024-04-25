@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
+
 class UserController extends Controller
 {
     public function index()
@@ -23,13 +25,13 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
         ]);
-
+        $passwordHash = Hash::make($request->password);
         $user = User::create([
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
             'numero' => $request->numero,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $passwordHash,
             'activo' => true,
         ]);
 
@@ -45,16 +47,16 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'required|min:8',
         ]);
-
+        $passwordHash = Hash::make($request->password);
         $user->update([
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
             'numero' => $request->numero,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $passwordHash,
         ]);
 
-        return response()->json(['message' => 'Usuario actualizado correctamente', 'user' => $user],  Response::HTTP_ok);
+        return response()->json(['message' => 'Usuario actualizado correctamente', 'user' => $user],  Response::HTTP_OK);
     }
 
     public function destroy(User $user)
