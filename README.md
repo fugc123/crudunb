@@ -1,0 +1,2 @@
+PARA LEVANTAR LA BASE DE DATOS A TRAVES DE DOQUER 
+docker-compose.yml
